@@ -6,5 +6,3 @@
 -fstack-protector 
 -I 
 include
--lSLD2
--lSDL2_image
