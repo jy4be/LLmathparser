@@ -45,6 +45,10 @@ size_t lex_string(
             command = LEX_EVAL_ID | LEX_PUSH_TOK;
             type    = BRACKET_CLOSE;
             break;
+        case ',':
+            command = LEX_EVAL_ID | LEX_PUSH_TOK;
+            type    = COMMA;
+            break;
         case '+':
             command = LEX_EVAL_ID | LEX_PUSH_TOK;
             type    = OP_BIN;

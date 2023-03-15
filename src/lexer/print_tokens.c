@@ -27,6 +27,9 @@ void print_tokens(token_t* token_list, size_t tok_count) {
         case SYS_EOF:
             printf("{SYS_END_OF_FILE}\n");
             break;
+        case COMMA:
+            printf("{COMMA}\n");
+            break;
         default:
             printf("UNKOWN TOKEN TYPE\n");
         }

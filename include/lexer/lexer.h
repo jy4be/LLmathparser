@@ -12,8 +12,9 @@ typedef enum {
     ID_FUNC = 3,
     ID_VAR = 4,
     ID_NUM = 5,
-    SYS_EOF = 6,
-    EMPTY = 7,
+    COMMA = 6,
+    SYS_EOF = 7,
+    EMPTY = 8,
 } token_type_t;
 
 typedef enum {

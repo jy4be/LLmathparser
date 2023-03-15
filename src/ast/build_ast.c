@@ -128,6 +128,11 @@ expression_t assemble_expression(
 
         source_exp.left = nstk_top((*exp_stack));
         nstk_pop((*exp_stack));
+        //Comma
+        nstk_pop((*token_stack));
+
+        source_exp.right = nstk_top((*exp_stack));
+        nstk_pop((*exp_stack));
 
         nstk_pop((*token_stack));
         nstk_pop((*token_stack));

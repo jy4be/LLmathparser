@@ -3,6 +3,7 @@
 #include "nlib/stdalloc.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 
 //Recursively calls itself on all child nodes of 'top' expression to calculate result
@@ -30,11 +31,13 @@ double evaluate_ast(
         result = var_value;
         break;
     case EXP_FUNC:
-        //currently, pow is the only function
-        //if there were more inbuilt functions, they'd have to be
-        //differentiated here
-        result = evaluate_ast(top->expr, var_value);
-        result *= result;
+        /* Mhh, function pointers, lovely.
+         * The function builtin_from_name returns the correct
+         * fp for its name, which is then evaluated.
+         */
+        result = builtin_from_name(top->id_name) (
+                evaluate_ast(top->left, var_value),
+                evaluate_ast(top->right, var_value));
         break;
     case EXP_EMPTY:
         printf("shouldn't evaluate empty expression!\n");

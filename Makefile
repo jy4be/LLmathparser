@@ -10,7 +10,7 @@ SOURCE_DIRS = $(LIBRARY_SRC) src src/lexer/ src/parser src/ast src/computer
 TESTS = 
 
 CFLAGS = -std=c2x -Wall -Wextra -fstack-protector -I $(IDIR)
-LDFLAGS = -I $(IDIR) -L$(BUILDDIR)
+LDFLAGS = -I $(IDIR) -L$(BUILDDIR) -lm
 OPTIMIZATION = -Og
 
 TESTPATH = $(BUILDDIR)/$(TESTDIR)

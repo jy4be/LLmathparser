@@ -32,5 +32,7 @@ char* symbol_string(symbol_t symbol_number) {
         return "NT_T";
     case T_EOS:
         return "$";
+    case T_COMMA:
+        return "T_COMMA";
     }
 }

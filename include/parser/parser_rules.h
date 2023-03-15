@@ -13,16 +13,16 @@ const rule_t D1 =
 const rule_t D2 = 
     {0, RULE_TYPE_D2, NT_D, {0}};
 const rule_t T1 = 
-    {4, RULE_TYPE_T1, NT_T, {T_FUNC, T_BRACKET_OPEN, NT_E, T_BRACKET_CLOSE}};
+    {6, RULE_TYPE_T1, NT_T, {T_FUNC, T_BRACKET_OPEN, NT_E, T_COMMA, NT_E, T_BRACKET_CLOSE}};
 const rule_t T2 = 
     {1, RULE_TYPE_T2, NT_T, {T_VAR}};
 const rule_t T3 = 
     {1, RULE_TYPE_T3, NT_T, {T_NUM}};
 
 
-const rule_t* PARSING_TABLE[3][7] = 
-    {{NULL, &E1, NULL, &E2, &E2, &E2, NULL},
-     { &D1, &D2, &D2, &D2, &D2, &D2, &D2},
-     {NULL, NULL, NULL, &T1, &T2, &T3, NULL}
+const rule_t* PARSING_TABLE[3][8] = 
+    {{NULL, &E1, NULL, &E2, &E2, &E2, NULL, NULL},
+     { &D1, &D2, &D2, &D2, &D2, &D2, &D2, &D2},
+     {NULL, NULL, NULL, &T1, &T2, &T3, NULL, NULL}
     };
 #endif//PARSER_RULES_H_

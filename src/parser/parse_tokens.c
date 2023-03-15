@@ -51,8 +51,7 @@ pa_stack_t parse_tokens(
             printf("ILLEGAL GRAMMAR\n");
             exit(-1);
         }
-        rule_t* prod_rule =
-           PARSING_TABLE[current_symbol - 100][tokens[token_index].type];
+        rule_t* prod_rule = PARSING_TABLE[current_symbol - 100][tokens[token_index].type];
 
 
         if(!prod_rule) {

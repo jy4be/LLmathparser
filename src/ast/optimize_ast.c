@@ -1,5 +1,6 @@
 #include "ast/ast.h"
 #include "computer/builtins.h"
+#include <math.h>
 #include "nlib/stdalloc.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,23 +68,23 @@ expression_t *sub_optimize(
         }
         break;
     case EXP_FUNC:
-        //currently, pow is the only function
-        //if there were more inbuilt functions, they'd have to be
-        //differentiated here
-        left = sub_optimize(
-                node->expr,
-                exp_stack);
-        if (left->type == EXP_NUM) {
+        left  = sub_optimize(node->left , exp_stack);
+        right = sub_optimize(node->right, exp_stack);
+        if (left->type == EXP_NUM && right->type == EXP_NUM) {
             new_exp = (expression_t) {
                 .type = EXP_NUM,
-                .value = left->value * left->value};
+                .value = 
+                    builtin_from_name(node->id_name)
+                    (left->value, right->value)};
+
             nstk_push((*exp_stack), new_exp); 
             result = &nstk_top((*exp_stack));
         }
         else {
             new_exp = (expression_t) {
                 .type = EXP_FUNC,
-                .expr = left,
+                .left = left,
+                .right = right,
                 .id_name = node->id_name};
             nstk_push((*exp_stack), new_exp); 
             result = &nstk_top((*exp_stack));
