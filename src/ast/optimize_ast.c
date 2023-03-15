@@ -1,5 +1,5 @@
 #include "ast/ast.h"
-#include "ast/ast_builtins.h"
+#include "computer/builtins.h"
 #include "nlib/stdalloc.h"
 #include <stdio.h>
 #include <stdlib.h>

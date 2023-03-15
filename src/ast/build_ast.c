@@ -6,7 +6,7 @@
 #include "nlib/stdalloc.h"
 
 
-/* Based on the rule aand together with the list of tokens and expression, 
+/* Based on the rule and together with the list of tokens and expression, 
  * transform the data into an expression according to the rule */
 expression_t assemble_expression(
         rule_t* rule,
