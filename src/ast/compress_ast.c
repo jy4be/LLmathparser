@@ -1,5 +1,5 @@
 #include "ast/ast.h"
-#include "ast/ast_builtins.h"
+#include "computer/builtins.h"
 #include "nlib/stdalloc.h"
 #include <stdio.h>
 
@@ -64,7 +64,10 @@ expression_t *reorder_ast(
 
         //Whe an expression with higher priority is found, reorder it first
         if(node->type == EXP_BRACKET || node->type == EXP_FUNC) {
-            node->expr = reorder_ast(node->expr, exp_stack);
+            node->left = reorder_ast(node->left, exp_stack);
+            if(node->right)
+                node->right = reorder_ast(node->right, exp_stack);
+
             nstk_push(values, node);
             continue;
         }

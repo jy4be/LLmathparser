@@ -5,6 +5,7 @@
 #include "lexer/lexer.h"
 #include "parser/parser.h"
 #include "ast/ast.h"
+#include "computer/builtins.h"
 
 #define INPUT_MAX_LENGTH 256
 #define MAX_TOKENS 256
@@ -23,15 +24,11 @@ int main(int argc, char **argv) {
     expression_t* top_exp;
     double result;
 
-    //currently, pow is the only function, and no mechanism for ohter functions is in place
-    char *funcs[] = {"pow"};
-
-
     //read an input string from the console
     readline(fn, INPUT_MAX_LENGTH);
     
     //Lex input string
-    token_count = lex_string(fn, 'x', funcs, 1, token_List);
+    token_count = lex_string(fn, 'x', INBUILT_FUNCS, 1, token_List);
     print_tokens(token_List, token_count);
 
     //Parse tokens

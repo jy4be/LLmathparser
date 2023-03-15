@@ -11,6 +11,7 @@ typedef enum {
     T_FUNC = 3,
     T_VAR = 4,
     T_NUM = 5,
+    T_COMMA = 6,
     NT_E = 100,
     NT_D = 101,
     NT_T = 102,
@@ -37,7 +38,7 @@ typedef struct Rule_S {
     size_t length;
     rule_type_t type;
     symbol_t source;
-    symbol_t production[4];
+    symbol_t production[6];
 } rule_t;
 
 typedef struct Parser_Action_S {

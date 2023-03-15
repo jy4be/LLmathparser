@@ -6,7 +6,7 @@
 #include "nlib/stdalloc.h"
 
 
-/* Based on the rule aand together with the list of tokens and expression, 
+/* Based on the rule and together with the list of tokens and expression, 
  * transform the data into an expression according to the rule */
 expression_t assemble_expression(
         rule_t* rule,
@@ -127,6 +127,11 @@ expression_t assemble_expression(
         source_exp.id_name = token.func;
 
         source_exp.left = nstk_top((*exp_stack));
+        nstk_pop((*exp_stack));
+        //Comma
+        nstk_pop((*token_stack));
+
+        source_exp.right = nstk_top((*exp_stack));
         nstk_pop((*exp_stack));
 
         nstk_pop((*token_stack));

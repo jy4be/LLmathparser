@@ -6,3 +6,4 @@
 -fstack-protector 
 -I 
 include
+-lm
