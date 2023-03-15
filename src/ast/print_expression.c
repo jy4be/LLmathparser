@@ -1,4 +1,5 @@
 #include "ast/ast.h"
+#include "ast/ast_builtins.h"
 
 #include <stdio.h>
 
@@ -17,6 +18,8 @@ void print_expression(expression_t exp, size_t indent) {
         printf(", func name: %s", exp.id_name);
     if(exp.type == EXP_NUM)
         printf(", value: %f", exp.value);
+    if(exp.type == EXP_BIN_OP)
+        printf(", operator: %c", OPERATOR_CHARS[exp.operator]);
     printf("}\n");
 
     if(exp.left)
@@ -28,14 +31,8 @@ void print_expression(expression_t exp, size_t indent) {
 /* Stringified version of the expression type name */
 char* expr_type_string(expr_type_t type) {
     switch (type) {
-    case (EXP_ADD):
-        return "ADD";
-    case (EXP_SUB):
-        return "SUB";
-    case (EXP_MUL):
-        return "MUL";
-    case (EXP_DIV):
-        return "DIV";
+    case (EXP_BIN_OP):
+        return "BIN_OP";
     case (EXP_BRACKET):
         return "BRACKET";
     case (EXP_FUNC):

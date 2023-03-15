@@ -1,4 +1,5 @@
 #include "ast/ast.h"
+#include "ast/ast_builtins.h"
 #include "nlib/stdalloc.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -89,76 +90,21 @@ expression_t *sub_optimize(
 
         }
         break;
-    case EXP_ADD:
+    case EXP_BIN_OP:
         left = sub_optimize(node->left, exp_stack);
         right = sub_optimize(node->right, exp_stack);
-
+    
         if (left->type == EXP_NUM && right->type == EXP_NUM){
             new_exp = (expression_t) {
                         .type = EXP_NUM,
-                        .value = left->value + right->value};
+                        .value = BUILTINS[node->operator]
+                            (left->value, right->value)};
             nstk_push((*exp_stack), new_exp); 
         }
         else {
             new_exp = (expression_t) {
-                .type = EXP_ADD,
-                .left = left,
-                .right = right};
-            nstk_push((*exp_stack), new_exp); 
-        }
-        result = &nstk_top((*exp_stack));
-        break;
-    case EXP_SUB:
-        left = sub_optimize(node->left, exp_stack);
-        right = sub_optimize(node->right, exp_stack);
-
-        if (left->type == EXP_NUM && right->type == EXP_NUM){
-            new_exp = (expression_t) {
-                        .type = EXP_NUM,
-                        .value = left->value - right->value};
-            nstk_push((*exp_stack), new_exp); 
-        }
-        else {
-            new_exp = (expression_t) {
-                .type = EXP_SUB,
-                .left = left,
-                .right = right};
-            nstk_push((*exp_stack), new_exp); 
-        }
-        result = &nstk_top((*exp_stack));
-        break;
-    case EXP_MUL:
-        left = sub_optimize(node->left, exp_stack);
-        right = sub_optimize(node->right, exp_stack);
-
-        if (left->type == EXP_NUM && right->type == EXP_NUM){
-            new_exp = (expression_t) {
-                        .type = EXP_NUM,
-                        .value = left->value * right->value};
-            nstk_push((*exp_stack), new_exp); 
-        }
-        else {
-            new_exp = (expression_t) {
-                .type = EXP_MUL,
-                .left = left,
-                .right = right};
-            nstk_push((*exp_stack), new_exp); 
-        }
-        result = &nstk_top((*exp_stack));
-        break;
-    case EXP_DIV:
-        left = sub_optimize(node->left, exp_stack);
-        right = sub_optimize(node->right, exp_stack);
-
-        if (left->type == EXP_NUM && right->type == EXP_NUM){
-            new_exp = (expression_t) {
-                        .type = EXP_NUM,
-                        .value = left->value / right->value};
-            nstk_push((*exp_stack), new_exp); 
-        }
-        else {
-            new_exp = (expression_t) {
-                .type = EXP_DIV,
+                .type = EXP_BIN_OP,
+                .operator = node->operator,
                 .left = left,
                 .right = right};
             nstk_push((*exp_stack), new_exp); 

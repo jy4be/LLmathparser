@@ -100,16 +100,20 @@ expression_t assemble_expression(
         nstk_pop((*token_stack));
 
         if (token.operator == '+') {
-            source_exp.type = EXP_ADD;
+            source_exp.type = EXP_BIN_OP;
+            source_exp.operator = INF_OP_ADD;
         }
         if (token.operator == '-') {
-            source_exp.type = EXP_SUB;
+            source_exp.type = EXP_BIN_OP;
+            source_exp.operator = INF_OP_SUB;
         }
         if (token.operator == '*') {
-            source_exp.type = EXP_MUL;
+            source_exp.type = EXP_BIN_OP;
+            source_exp.operator = INF_OP_MUL;
         }
         if (token.operator == '/') {
-            source_exp.type = EXP_DIV;
+            source_exp.type = EXP_BIN_OP;
+            source_exp.operator = INF_OP_DIV;
         }
         source_exp.left = nstk_top((*exp_stack));
         nstk_pop((*exp_stack));
