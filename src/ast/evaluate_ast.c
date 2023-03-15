@@ -1,4 +1,5 @@
 #include "ast/ast.h"
+#include "ast/ast_builtins.h"
 #include "nlib/stdalloc.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,21 +21,10 @@ double evaluate_ast(
                 top->expr,
                 var_value);
         break;
-    case EXP_ADD:
-        result = evaluate_ast(top->left , var_value) +
-                 evaluate_ast(top->right, var_value);
-        break;
-    case EXP_SUB:
-        result = evaluate_ast(top->left , var_value) -
-                 evaluate_ast(top->right, var_value);
-        break;
-    case EXP_MUL:
-        result = evaluate_ast(top->left , var_value) *
-                 evaluate_ast(top->right, var_value);
-        break;
-    case EXP_DIV:
-        result = evaluate_ast(top->left , var_value) /
-                 evaluate_ast(top->right, var_value);
+    case EXP_BIN_OP:
+        result = BUILTINS[top->operator](
+                evaluate_ast(top->left, var_value),
+                evaluate_ast(top->right, var_value));
         break;
     case EXP_VAR:
         result = var_value;
@@ -52,5 +42,4 @@ double evaluate_ast(
     }
 
     return result;
-
 }

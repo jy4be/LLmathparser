@@ -4,16 +4,24 @@
 #include "parser/parser.h"
 
 typedef enum {
-    EXP_ADD,
+    /*EXP_ADD,
     EXP_SUB,
     EXP_MUL,
-    EXP_DIV,
+    EXP_DIV,*/
+    EXP_BIN_OP,
     EXP_VAR,
     EXP_FUNC,
     EXP_NUM,
     EXP_BRACKET,
     EXP_EMPTY,
 } expr_type_t;
+
+typedef enum {
+    INF_OP_ADD = 0,
+    INF_OP_SUB = 1,
+    INF_OP_MUL = 2,
+    INF_OP_DIV = 3
+} infix_op_type_t;
 
 typedef struct Expression_S {
     expr_type_t type;
@@ -25,6 +33,7 @@ typedef struct Expression_S {
     union {
         char* id_name;
         double value;
+        infix_op_type_t operator;
     };
 } expression_t;
 

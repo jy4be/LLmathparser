@@ -1,4 +1,5 @@
 #include "ast/ast.h"
+#include "ast/ast_builtins.h"
 #include "nlib/stdalloc.h"
 #include <stdio.h>
 
@@ -23,6 +24,7 @@ expression_t* format_ast(
         }
         if(top_expression->right && top_expression->left) {
             top_expression->type = top_expression->right->type;
+            top_expression->operator = top_expression->right->operator;
             top_expression->right = top_expression->right->left;
         }
         if(!top_expression->right && !top_expression->left) {
@@ -43,7 +45,7 @@ expression_t *reorder_ast(
     stack_t(expression_t*) to_traverse;
     nstk_setup(to_traverse, 1024, stdalloc);
 
-    stack_t(expr_type_t) operator_stack;
+    stack_t(infix_op_type_t) operator_stack;
     nstk_setup(operator_stack, 1024, stdalloc);
 
     stack_t(expression_t*) values;
@@ -67,9 +69,9 @@ expression_t *reorder_ast(
             continue;
         }
 
-        if(node->type == EXP_ADD || node->type == EXP_SUB ||
-           node->type == EXP_MUL || node->type == EXP_DIV)
-            nstk_push(operator_stack, node->type);
+        if(node->type == EXP_BIN_OP) {
+            nstk_push(operator_stack, node->operator);
+        }
         else
             nstk_push(values, node);
 
@@ -83,7 +85,8 @@ expression_t *reorder_ast(
     expression_t *to_fill = &new_top_parent;
     while(nstk_size(operator_stack)) {
         expression_t reordered_node = {
-            .type = nstk_top(operator_stack),
+            .type = EXP_BIN_OP,
+            .operator = nstk_top(operator_stack),
             .right = nstk_top(values)}; 
         nstk_pop(operator_stack);
         nstk_pop(values);
@@ -140,17 +143,18 @@ expression_t *ast_arithmetic_order(expression_t* top){
 
         //check to see if a higher order expression has a 
         //lower order node as child
-        if(node->type == EXP_MUL || node->type == EXP_DIV) {
-            if(node->left->type == EXP_ADD || node->left->type == EXP_SUB) {
+        if(node->type == EXP_BIN_OP && (node->operator == INF_OP_MUL || node->operator == INF_OP_DIV)) {
+            if(node->left->type == EXP_BIN_OP && 
+                    (node->left->operator == INF_OP_ADD || node->left->operator == INF_OP_SUB)) {
                 expression_t* lesser = node->left;
 
                 node->left = lesser->left;
                 lesser->left = node->right;
                 node->right = lesser;
 
-                expr_type_t tmp = node->type;
-                node->type = lesser->type;
-                lesser->type = tmp;
+                infix_op_type_t tmp = node->operator;
+                node->operator = lesser->operator;
+                lesser->operator = tmp;
 
                 expression_t *tmp_exp = lesser->right;
                 lesser->right = lesser->left;
